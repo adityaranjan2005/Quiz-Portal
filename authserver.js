@@ -14,14 +14,13 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
-  useCreateIndex: true,
   useUnifiedTopology: true,
-});
-
-mongoose.connection.once("open", () => {
-  console.log("connection established successfully");
+}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch((error) => {
+  console.error('MongoDB connection error:', error);
 });
 
 const userRouter = require("./routes/user");
